@@ -4,7 +4,7 @@ const telefono= document.querySelector('#telefono')
 const fecha= document.querySelector('#fecha')
 const hora= document.querySelector('#hora')
 const sintomas=document.querySelector('#sintomas')
-const formulario= document.querySelector('#nueva-cita')
+const formulario= document.querySelector('#nuevaCita')
 const contenedorCitas= document.querySelector('#citas')
 
 const objCita={
@@ -133,7 +133,7 @@ class ui{
             const btnEditar= document.createElement('button')
             btnEditar.classList.add('btn','btn-info', 'mr-2')
             btnEditar.innerHTML=`Editar <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>` 
-            btnEditar.onclick = ()=> editarCitaCita(id)
+            btnEditar.onclick = ()=> editarCita(id)
 
 
             divCitas.appendChild(mascotaParrafo)
@@ -172,7 +172,14 @@ function nuevaCita(e) {
     }
 
     if(editar){
-       console.log('estoy editando') 
+       //console.log('estoy editando') 
+       formulario.querySelector('button[type-sumit]').textContent = 'Crear cita '
+       editar= false 
+
+       administrarCitas.editarCita({...objCita})
+
+       // mensaje al usuario 
+       useri.imprimirAlerta('Se a modificado correctamente ')
           
     }else{
         //console.log(nuevaCita)
@@ -220,6 +227,29 @@ function eliminarCita(id){
 }
 
 function editarCita(citas){
+  const {mascota, propietario, telefono, fecha, hora, sintomas, id } = citas
+  
 
+  // limpiar input 
+  mascotaInput.value = mascota
+  propietarioInput.value =propietario
+  telefonoInput.value =telefono
+  fechaInput.value= fecha
+  horaInput.value= hora
+  sintomasInput.value = sintomas
+
+
+  // llenar el objeto 
+  objCita.mascota= mascota
+  objCita.propietario=propietario
+  objCita.telefono=telefono
+  objCita.fecha=fecha
+  objCita.hora=hora
+  objCita.sintomas=sintomas
+  objCita.id=id
+
+  // texto del boton 
+
+  formulario.querySelector('button[typr-submit]').textContent= 'Guardar'
 }
 
