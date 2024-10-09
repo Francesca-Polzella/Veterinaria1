@@ -89,12 +89,14 @@ class ui{
 
     imprimirCitas(citas){
         //console.log('imprimir citas')
-        citas.array.forEach(citas => {
+
+        this.limpiarHTML
+        citas.forEach(citas => {
             const {mascota, propietario, telefono, fecha, hora, sintomas, id } = citas
             const divCitas = document.createElement('div')
-            divCitas.classList.add('citas','p.3')
+            divCitas.classList.add('citas','p-3')
             //esto es un atributo personalizado
-            divCitas.dataset.id=id
+            divCitas.dataset.id = id
             
 
             //generar las contastates de las fichas 
@@ -122,6 +124,17 @@ class ui{
             const sintomasParrafo= document.createElement('p')
             sintomasParrafo.innerHTML=`
             <span class = font-weight-bolder>sintomas:${sintomas}</span>`
+            
+            const btnEliminar= document.createElement('button')
+            btnEliminar.classList.add('btn','btn-danger', 'mr-2')
+            btnEliminar.innerHTML= ` Eliminar <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`
+            btnEliminar.onclick = ()=> eliminarCita(id)
+
+            const btnEditar= document.createElement('button')
+            btnEditar.classList.add('btn','btn-info', 'mr-2')
+            btnEditar.innerHTML=`Editar <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>` 
+            btnEditar.onclick = ()=> editarCitaCita(id)
+
 
             divCitas.appendChild(mascotaParrafo)
             divCitas.appendChild(propietarioParrafo)
@@ -129,13 +142,19 @@ class ui{
             divCitas.appendChild(fechaParrafo)
             divCitas.appendChild(horaParrafo)
             divCitas.appendChild(sintomasParrafo)
+            divCitas.appendChild(btnEliminar)
+            divCitas.appendChild(btnEditar)
 
             contenedorCitas.appendChild(divCitas)
 
         });
     }
 
-    
+    limpiarHTML(){
+        while(contenedorCitas.firstChild){
+            contenedorCitas.removeChild(contenedorCitas.firstChild)
+        }
+    }
 }
 const useri = new ui()
 
@@ -150,27 +169,33 @@ function nuevaCita(e) {
      //console.log('todos los campos son obligatorios')
         useri.imprimirAlerta('Todos los campos son obligatorios','error')
         return
-    
+    }
+
+    if(editar){
+       console.log('estoy editando') 
+          
     }else{
         //console.log(nuevaCita)
         administrarCitas.agregarCita({...objCita})
         objCita.id= Date.now()
-        
-        formulario.reset()
-        reiniciarObjeto()
-        useri.imprimirCitas(administrarCitas)
-
         useri.imprimirAlerta('Se ha agregado la cita correctamente')
+
+        formulario.reset()
+      reiniciarObjeto()
+      useri.imprimirCitas(administrarCitas)
     }
-       
-}
     
+    
+
+    
+}
 
 
 function datosCitas(e){
     //console.log(e.target.name)
     objCita[e.target.name]= e.target.value // esta te ayuda a ser el puntero del formulario
     //console.log(objCita)   
+ 
 }
 
 
@@ -183,4 +208,18 @@ function reiniciarObjeto(){
     objCita.sintomas='';
 }
 
+function eliminarCita(id){
+    
+   administrarCitas.eliminarCita(id)
+   //mostrar mensaje 
+   useri.imprimirAlerta('la cita se a eliminado')
+   
+   //actualizar cita 
+   useri.imprimirCitas(administrarCitas)
+
+}
+
+function editarCita(citas){
+
+}
 
