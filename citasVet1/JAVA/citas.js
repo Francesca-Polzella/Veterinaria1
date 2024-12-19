@@ -4,8 +4,9 @@ const telefono= document.querySelector('#telefono')
 const fecha= document.querySelector('#fecha')
 const hora= document.querySelector('#hora')
 const sintomas=document.querySelector('#sintomas')
-const formulario= document.querySelector('#nuevaCita')
+const formulario= document.querySelector('#nueva-cita')
 const contenedorCitas= document.querySelector('#citas')
+let editar= false
 
 const objCita={
     mascota:'',
@@ -37,9 +38,9 @@ class citas{
     this.citas=[]// esto ayuda llamarse el arreglos a si mismo
  }
 
- agregarCita(citas){
+ agregarCita(cita){
   //citas.push(cita)
-  this.citas=[...this.citas,citas]
+  this.citas=[...this.citas,cita]
   console.log(this.citas)
   /// es para ver como va guardanddo las citas 
  }
@@ -48,8 +49,8 @@ class citas{
 
  
  }
- editarCita(citas){
-   this.citas= this,citas.map(citas=>citas.id ===citaAct.id ? citaAct:citas)
+ editarCita(citaAct){
+   this.citas= this.citas.map(citas=>citas.id ===citaAct.id ? citaAct:citas)
  }
 }
 const administrarCitas =new citas()
@@ -88,11 +89,11 @@ class ui{
     }
 
     imprimirCitas(citas){
-        //console.log('imprimir citas')
+       // console.log( citas)
 
-        this.limpiarHTML
-        citas.forEach(citas => {
-            const {mascota, propietario, telefono, fecha, hora, sintomas, id } = citas
+        this.limpiarHTML()
+        citas.forEach(i => {
+            const {mascota, propietario, telefono, fecha, hora, sintomas, id } = i
             const divCitas = document.createElement('div')
             divCitas.classList.add('citas','p-3')
             //esto es un atributo personalizado
@@ -184,6 +185,7 @@ function nuevaCita(e) {
     }else{
         //console.log(nuevaCita)
         administrarCitas.agregarCita({...objCita})
+        console.log(administrarCitas)
         objCita.id= Date.now()
         useri.imprimirAlerta('Se ha agregado la cita correctamente')
 
